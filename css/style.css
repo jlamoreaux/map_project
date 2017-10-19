@@ -1,0 +1,37 @@
+html, body {
+  font-family: helvetica, arial, sans-serif;
+  height: 100%
+}
+
+h1 {
+  text-transform: uppercase;
+  font-weight: 100;
+}
+
+#map {
+  height: 100%;
+}
+
+@media screen and (max-width: 500px) {
+
+
+
+
+}
+
+@media screen and (min-width: 500px) and (max-width: 800px) {
+
+
+
+
+
+}
+
+@media screen and (min-width: 800px) {
+
+
+
+
+
+
+}
