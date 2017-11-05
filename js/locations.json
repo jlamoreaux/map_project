@@ -1,0 +1,27 @@
+[
+  {
+    "title": "StoutHaus Coffee Pub",
+    "latLng": {"lat": 30.2325888, "lng": -97.811333},
+    "info":""
+  },
+  {
+    "title": "Torchy's Tacos",
+    "latLng": {"lat": 30.2509257, "lng": -97.7542336},
+    "info": ""
+  },
+  {
+    "title": "Gordough's Big. Fat. Donuts.",
+    "latLng": {"lat": 30.2495123, "lng": -97.7548084},
+    "info": ""
+  },
+  {
+    "title": "Lick Honest Ice Creams",
+    "latLng": {"lat": 30.2555995, "lng": -97.7626348},
+    "info": ""
+  },
+  {
+    "title": "St. Elmo Brewing Company",
+    "latLng": {"lat": 30.2174538, "lng": -97.7610629},
+    "info": ""
+  }
+]
