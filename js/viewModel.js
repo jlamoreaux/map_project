@@ -73,8 +73,16 @@ function AppViewModel() {
   });
 
   // Click Event for Locations List
-  self.clickLocation = function(){
-    console.log('stuff');
+  self.clickLocation = function(location){
+    console.log(location.title());
+    title = location.title();
+    for(var i = 0; i < markers.length; i++){
+      console.log(markers[i].title);
+      if (markers[i].title == title){
+        console.log('yes');
+        toggleBounce(markers[i]);
+      }
+    }
   };
 
   // Initializes Neighborhood Map
@@ -100,12 +108,22 @@ function AppViewModel() {
         map: map,
         position: position,
         title: title,
+        icon: 'img/marker.png',
         animation: google.maps.Animation.DROP,
         id: i
       });
+      marker.addListener('click');
       //createList(locations[i]);
       markers.push(marker);
       //marker.addListener()
+    }
+  };
+
+  function toggleBounce(marker) {
+    if (marker.getAnimation() !== null) {
+      marker.setAnimation(null);
+    } else {
+      marker.setAnimation(google.maps.Animation.BOUNCE);
     }
   };
   /*function createList(location) {
