@@ -9,27 +9,27 @@ function AppViewModel() {
     {
       title: "StoutHaus Coffee Pub",
       latLng: {lat: 30.2325888, lng: -97.811333},
-      info:""
+      info:"Words"
     },
     {
       title: "Torchy's Tacos",
       latLng: {lat: 30.2509257, lng: -97.7542336},
-      info: ""
+      info: "More words"
     },
     {
       title: "Gordough's Big. Fat. Donuts.",
       latLng: {lat: 30.2495123, lng: -97.7548084},
-      info: ""
+      info: "Other words"
     },
     {
       title: "Lick Honest Ice Creams",
       latLng: {lat: 30.2555995, lng: -97.7626348},
-      info: ""
+      info: "Words Words Words"
     },
     {
       title: "St. Elmo Brewing Company",
       latLng: {lat: 30.2174538, lng: -97.7610629},
-      info: ""
+      info: "stuff"
     }
   ];
 
@@ -105,9 +105,13 @@ function AppViewModel() {
     // Create markers for map locations
     for (var i = 0; i < locations().length; i++) {
       // Gets info from location array in Model
-
+      var contentString = locations()[i].info();
       var position = locations()[i].latLng();
       var title = locations()[i].title();
+      // Create Info Window
+      var infowindow = new google.maps.InfoWindow({
+        content: contentString
+      });
       // Create a marker for each location
       var marker = new google.maps.Marker({
         map: map,
@@ -117,7 +121,9 @@ function AppViewModel() {
         animation: google.maps.Animation.DROP,
         id: i
       });
-      marker.addListener('click');
+      marker.addListener('click', function() {
+        infowindow.open(map, marker);
+      });
       //createList(locations[i]);
       markers.push(marker);
       //marker.addListener()
