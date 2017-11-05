@@ -60,14 +60,21 @@ function AppViewModel() {
       arr = [];
     if (filter) {
       ko.utils.arrayForEach(self.locations(), function (location) {
-        console.log(location.title());
         if (location.title().includes(filter)) {
           arr.push(location);
           console.log(location.title());
         }
+        for(var i = 0; i < markers.length; i++){
+          if (markers[i].title.includes(filter) == false){
+            hideMarker(markers[i]);
+          }
+        }
       });
     } else {
         arr = self.locations();
+        for(var i = 0; i < markers.length; i++){
+            showMarker(markers[i]);
+        }
     }
     return arr;
   });
@@ -77,9 +84,7 @@ function AppViewModel() {
     console.log(location.title());
     title = location.title();
     for(var i = 0; i < markers.length; i++){
-      console.log(markers[i].title);
       if (markers[i].title == title){
-        console.log('yes');
         toggleBounce(markers[i]);
       }
     }
@@ -119,6 +124,7 @@ function AppViewModel() {
     }
   };
 
+  // Animate markers by making them bounce
   function toggleBounce(marker) {
     if (marker.getAnimation() !== null) {
       marker.setAnimation(null);
@@ -126,6 +132,17 @@ function AppViewModel() {
       marker.setAnimation(google.maps.Animation.BOUNCE);
     }
   };
+
+  // Hide marker on map
+  function hideMarker(marker) {
+    marker.setMap(null);
+  };
+
+  // Show marker on map
+  function showMarker(marker) {
+    marker.setMap(map);
+  };
+
   /*function createList(location) {
       document.getElementById('location-list').innerHTML += '<li>' + location.title + '</li>'
   };*/
