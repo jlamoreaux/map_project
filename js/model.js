@@ -24,8 +24,8 @@ function loadJSON(callback) {
 function init() {
  loadJSON(function(response) {
   // Parse JSON string into object
-    var actual_JSON = JSON.parse(response);
-    console.log(actual_JSON)
+    var locations = JSON.parse(response);
+    console.log(locations)
  });
 }
 
