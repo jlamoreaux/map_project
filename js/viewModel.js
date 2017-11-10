@@ -68,6 +68,7 @@ function initMap() {
       return function() {
         infowindow.setContent(marker.title, marker.contentString);
         infowindow.open(map, marker);
+        marker.setAnimation(null);
         console.log(marker.contentString);
       }
     })(marker));
@@ -87,6 +88,7 @@ function toggleBounce(marker) {
         marker.setAnimation(null);
     } else {
         marker.setAnimation(google.maps.Animation.BOUNCE);
+        //setTimeout(marker.setAnimation(null), 5000);
     }
 };
 
@@ -164,13 +166,14 @@ function AppViewModel() {
 
   // Click Event for Locations List
   self.clickLocation = function(location){
-    console.log(location.title());
-    title = location.title();
+    toggleBounce(location.marker);
+    /*title = location.title();
     for(var i = 0; i < markers.length; i++){
       if (markers[i].title == title){
-        toggleBounce(markers[i]);
+
+        console.log(location.title());
       }
-    }
+    }*/
   };
 
 };
