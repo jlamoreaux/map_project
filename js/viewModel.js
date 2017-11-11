@@ -3,30 +3,69 @@ var starterLocations = [
   {
     title: "StoutHaus Coffee Pub",
     latLng: {lat: 30.2325888, lng: -97.811333},
-    info:"Words"
+    info:"Words",
+    fsData: {}
   },
   {
     title: "Torchy's Tacos",
     latLng: {lat: 30.2509257, lng: -97.7542336},
-    info: "More words"
+    info: "More words",
+    fsData: {}
   },
   {
     title: "Gordough's Big. Fat. Donuts.",
     latLng: {lat: 30.2495123, lng: -97.7548084},
-    info: "Other words"
+    info: "Other words",
+    fsData: {}
   },
   {
     title: "Lick Honest Ice Creams",
     latLng: {lat: 30.2555995, lng: -97.7626348},
-    info: "Words Words Words"
+    info: "Words Words Words",
+    fsData: {}
   },
   {
     title: "St. Elmo Brewing Company",
     latLng: {lat: 30.2174538, lng: -97.7610629},
-    info: "stuff"
+    info: "stuff",
+    fsData: {}
   }
 ];
+var locations;
 
+// Get's Foursquare API info for locations
+function getFoursquare() {
+  console.log("Function ran");
+  var url = 'https://api.foursquare.com/v2/venues/search?client_id=4UXAAMMSVWQCST32VAD333YU05UABMCSMMXPREUCP40ATKSA&client_secret=XWYFPXB1TXC35X4WO43DMRU5ITDV2NAL0LIY2VV3YZ32EKBI&v=20171101'
+  for (i = 0; i < locations.length; i++){
+    locations[i].fsData = {};
+    // Make ajax request for each location
+    (function(i){
+        var currentLocation = locations[i];
+        var lat = locations[i].latLng().lat;
+        var lng = locations[i].latLng().lng;
+        url = url + "&ll=" + lat + "," + lng + "&query=" + locations[i].title(); // + lat + "," + lng
+        console.log(url);
+        $.ajax({
+          async: true,
+          url: url,
+          dataType: 'json',
+          success: function(data) {
+            locations[i].fsData = data.response.venues[0];
+            console.log(locations[i].fsData)
+          },
+          error: alert("")
+        });
+    })(i);
+    //.done(function(){
+      //return(fsData);
+    /*})
+    .fail(function(jqxhr, textStatus, error){
+      var err = textStatus + ", " + error;
+      console.log("Request Failed: " + err);
+    });*/
+  }
+};
 
 // Initializes Neighborhood Map
 function initMap() {
@@ -34,7 +73,7 @@ function initMap() {
   var largeInfoWindow = new google.maps.InfoWindow();
   var bounds = new google.maps.LatLngBounds();
   var marker, i;
-
+  getFoursquare();
   // Creates a new map centered on Austin, TX
   var map = new google.maps.Map(document.getElementById('map'), {
       center: {
@@ -52,7 +91,21 @@ function initMap() {
     //var contentString = location.info();
     var position = location.latLng();
     var title = location.title();
+    if(location.fsData){
+      console.log(location.fsData);
+    }
+    var content = {
 
+      //phone: location.fsData.contact.formattedPhone,
+      //address: location.fsData.location.formattedAddress,
+      //website: location.fsData.url,
+      //img: location.imgURL
+    }
+    /*var node = document.createElement("ul");
+    for(i = 0; i < content.length; i++){
+      node.appendChild("li");
+      node.appendChild(content[i]);
+    }*/
     // Create a marker for each location
     marker = new google.maps.Marker({
       map: map,
@@ -61,7 +114,7 @@ function initMap() {
       icon: 'img/marker.png',
       animation: google.maps.Animation.DROP,
       id: i,
-      contentString : location.info()
+      contentString : "node"
     });
 
     google.maps.event.addListener(marker, 'click', (function(marker) {
@@ -74,7 +127,6 @@ function initMap() {
     })(marker));
 
     location.marker = marker;
-
 
     //createList(locations[i]);
     //self.markers.push(marker);
@@ -127,7 +179,7 @@ function AppViewModel() {
     new Location(starterLocations[4])
   ]);
 
-  var locations = self.locations();
+  locations = self.locations();
 
   // Filter locations
   self.filter = ko.observable();
@@ -174,8 +226,7 @@ function AppViewModel() {
         console.log(location.title());
       }
     }*/
-  };
-
+  }
 };
 
 var appViewModel = new AppViewModel();
