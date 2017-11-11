@@ -44,8 +44,7 @@ function getFoursquare() {
         var currentLocation = locations[i];
         var lat = locations[i].latLng().lat;
         var lng = locations[i].latLng().lng;
-        url = url + "&ll=" + lat + "," + lng + "&query=" + locations[i].title(); // + lat + "," + lng
-        console.log(url);
+        url = url + "&ll=" + lat + "," + lng + "&query=" + locations[i].title();
         $.ajax({
           async: true,
           url: url,
@@ -54,7 +53,10 @@ function getFoursquare() {
             locations[i].fsData = data.response.venues[0];
             console.log(locations[i].fsData)
           },
-          error: alert("")
+          error: function(jqXHR) {
+            alert("Unable to load data from Foursquare for " + locations[i].title());
+            console.log(jqXHR);
+          }
         });
     })(i);
     //.done(function(){
