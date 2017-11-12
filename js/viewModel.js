@@ -13,7 +13,7 @@ var starterLocations = [
     fsData: {}
   },
   {
-    title: "Gordough's Big. Fat. Donuts.",
+    title: "Gordough's",
     latLng: {lat: 30.2495123, lng: -97.7548084},
     info: "Other words",
     fsData: {}
@@ -36,29 +36,56 @@ var locations;
 // Get's Foursquare API info for locations
 function getFoursquare() {
   console.log("Function ran");
-  var url = 'https://api.foursquare.com/v2/venues/search?client_id=4UXAAMMSVWQCST32VAD333YU05UABMCSMMXPREUCP40ATKSA&client_secret=XWYFPXB1TXC35X4WO43DMRU5ITDV2NAL0LIY2VV3YZ32EKBI&v=20171101'
+
   for (i = 0; i < locations.length; i++){
-    locations[i].fsData = {};
     // Make ajax request for each location
     (function(i){
-        var currentLocation = locations[i];
-        var lat = locations[i].latLng().lat;
-        var lng = locations[i].latLng().lng;
-        url = url + "&ll=" + lat + "," + lng + "&query=" + locations[i].title();
-        $.ajax({
-          async: true,
-          url: url,
-          dataType: 'json',
-          success: function(data) {
-            locations[i].fsData = data.response.venues[0];
-            console.log(locations[i].fsData)
-          },
-          error: function(jqXHR) {
-            alert("Unable to load data from Foursquare for " + locations[i].title());
-            console.log(jqXHR);
-          }
-        });
+      var url = 'https://api.foursquare.com/v2/venues/search?client_id=4UXAAMMSVWQCST32VAD333YU05UABMCSMMXPREUCP40ATKSA&client_secret=XWYFPXB1TXC35X4WO43DMRU5ITDV2NAL0LIY2VV3YZ32EKBI&v=20171101'
+      var currentLocation = locations[i];
+      var lat = locations[i].latLng().lat;
+      var lng = locations[i].latLng().lng;
+      url = url + "&ll=" + lat + "," + lng + "&query=" + locations[i].title();
+      $.ajax({
+        async: true,
+        url: url,
+        dataType: 'json',
+        success: function(data) {
+          var fsData = data.response.venues[0];
+          currentLocation.fsID = fsData.id;
+          currentLocation.fsName = fsData.name;
+          currentLocation.fsPhone = fsData.contact.formattedPhone;
+          currentLocation.fsAddress = fsData.location.formattedAddress;
+          currentLocation.fsURL = fsData.url;
+          getFoursquareImage(currentLocation);
+          console.log(currentLocation.fsData)
+        },
+        error: function(jqXHR) {
+          alert("Unable to load data from Foursquare for " + locations[i].title());
+          console.log(jqXHR);
+        }
+      });
     })(i);
+        // Make ajax request for an image for each location
+    function getFoursquareImage(currentLocation){
+      var id = currentLocation.fsID;
+      var prefix = 'https://api.foursquare.com/v2/venues/'
+      var suffix = '/photos?client_id=4UXAAMMSVWQCST32VAD333YU05UABMCSMMXPREUCP40ATKSA&client_secret=XWYFPXB1TXC35X4WO43DMRU5ITDV2NAL0LIY2VV3YZ32EKBI&v=20171101'
+      var url = prefix + id + suffix;
+      $.ajax({
+        async: true,
+        url: url,
+        dataType: 'json',
+        success: function(data) {
+          var imgData = data.response.photos.items[0].prefix + '100x100' + data.response.photos.items[0].suffix;
+          currentLocation.fsImgURL = imgData;
+          console.log(currentLocation.fsImgURL);
+        },
+        error: function(jqXHR) {
+          alert("Unable to load image from Foursquare for " + locations[i].title());
+          console.log(jqXHR);
+        }
+      });
+    }(i);
     //.done(function(){
       //return(fsData);
     /*})
@@ -69,6 +96,18 @@ function getFoursquare() {
   }
 };
 
+// Populate InfoWindow with foursquare data
+// Modified version of solution found at https://stackoverflow.com/questions/3094032/how-to-populate-a-google-maps-infowindow-with-ajax-content
+function loadDescription(){
+  var marker = this;
+  marker.openInfoWidnow('<div id="marker-info">');
+  var $contentDiv = $("#marker-info");
+  $contentDiv.html(this.content);
+  var position = marker.getLatLng();
+  var infoWindow = map.getInfoWindow();
+  var infoWindowSize = new GSize($contentDiv.width(), $contentDiv.height());
+  infoWindow.reset(position, null, infoWindowSize, null, null);
+}
 // Initializes Neighborhood Map
 function initMap() {
   var styles = [];
@@ -116,15 +155,16 @@ function initMap() {
       icon: 'img/marker.png',
       animation: google.maps.Animation.DROP,
       id: i,
-      contentString : "node"
+      content : location.fsData
     });
 
     google.maps.event.addListener(marker, 'click', (function(marker) {
       return function() {
-        infowindow.setContent(marker.title, marker.contentString);
+        //infowindow.setContent(marker.title, marker.contentString);
         infowindow.open(map, marker);
         marker.setAnimation(null);
         console.log(marker.contentString);
+
       }
     })(marker));
 
