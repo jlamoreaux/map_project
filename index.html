@@ -8,15 +8,18 @@
   </head>
   <body>
     <div id="container">
+      <div id="header">
+          <a id="hamburger" href="javascript:void(0);" class="icon" onclick="showMenu()">&#9776;</a>
+      </div>
       <div id="interface">
-        <a href="javascript:void(0);" class="icon" onclick="showMenu()">&#9776;</a>
-        <input type="text" data-bind="value:filter,valueUpdate: 'keyup'" />
-        <ul data-bind="foreach: filteredLocations">
-          <li>
-            <span data-bind="text: title, click: $root.clickLocation"></span>
-          </li>
-        </ul>
-
+        <div id="interface-content">
+          <input type="text" data-bind="value:filter,valueUpdate: 'keyup'" />
+          <ul data-bind="foreach: filteredLocations">
+            <li>
+              <span data-bind="text: title, click: $root.clickLocation"></span>
+            </li>
+          </ul>
+        </div>
       </div>
       <div id="map">
 

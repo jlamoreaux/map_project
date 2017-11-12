@@ -33,6 +33,14 @@ var starterLocations = [
 ];
 var locations;
 
+function showMenu() {
+  var menu = document.getElementById('interface-content');
+  if(menu.style.display == "none"){
+    menu.style.display = "block";
+  } else {
+    menu.style.display = "none";
+  }
+}
 // Get's Foursquare API info for locations
 function getFoursquare() {
   for (i = 0; i < locations.length; i++){
