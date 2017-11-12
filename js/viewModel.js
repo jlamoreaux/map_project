@@ -35,8 +35,6 @@ var locations;
 
 // Get's Foursquare API info for locations
 function getFoursquare() {
-  console.log("Function ran");
-
   for (i = 0; i < locations.length; i++){
     // Make ajax request for each location
     (function(i){
@@ -51,13 +49,32 @@ function getFoursquare() {
         dataType: 'json',
         success: function(data) {
           var fsData = data.response.venues[0];
-          currentLocation.fsID = fsData.id;
-          currentLocation.fsName = fsData.name;
-          currentLocation.fsPhone = fsData.contact.formattedPhone;
-          currentLocation.fsAddress = fsData.location.formattedAddress;
-          currentLocation.fsURL = fsData.url;
+          if(fsData.id) {
+            currentLocation.fsID = fsData.id;
+          } else {
+            currentLocation.fsID = '';
+          };
+          if(fsData.name) {
+            currentLocation.fsName = fsData.name;
+          } else {
+            currentLocation.fsName = currentLocation.title();
+          };
+          if(fsData.contact.formattedPhone) {
+            currentLocation.fsPhone = fsData.contact.formattedPhone;
+          } else {
+            currentLocation.fsPhone = ''
+          };
+          if(fsData.location.formattedAddress){
+            currentLocation.fsAddress = fsData.location.formattedAddress;
+          } else {
+            currentLocation.fsAddress = ''
+          };
+          if(fsData.url) {
+            currentLocation.fsURL = fsData.url;
+          } else {
+            currentLocation.fsURL = '';
+          }
           getFoursquareImage(currentLocation);
-          console.log(currentLocation.fsData)
         },
         error: function(jqXHR) {
           alert("Unable to load data from Foursquare for " + locations[i].title());
@@ -78,7 +95,7 @@ function getFoursquare() {
         success: function(data) {
           var imgData = data.response.photos.items[0].prefix + '100x100' + data.response.photos.items[0].suffix;
           currentLocation.fsImgURL = imgData;
-          console.log(currentLocation.fsImgURL);
+          loadDescription(currentLocation);
         },
         error: function(jqXHR) {
           alert("Unable to load image from Foursquare for " + locations[i].title());
@@ -98,15 +115,13 @@ function getFoursquare() {
 
 // Populate InfoWindow with foursquare data
 // Modified version of solution found at https://stackoverflow.com/questions/3094032/how-to-populate-a-google-maps-infowindow-with-ajax-content
-function loadDescription(){
-  var marker = this;
-  marker.openInfoWidnow('<div id="marker-info">');
-  var $contentDiv = $("#marker-info");
-  $contentDiv.html(this.content);
-  var position = marker.getLatLng();
-  var infoWindow = map.getInfoWindow();
-  var infoWindowSize = new GSize($contentDiv.width(), $contentDiv.height());
-  infoWindow.reset(position, null, infoWindowSize, null, null);
+function loadDescription(location){
+  var marker = location.marker;
+  marker.contentString = '<div id="content"' + i + '>' + '<img src="' +
+    location.fsImgURL + '" alt=' + location.title() + '>' + '<p>' +
+    location.title() + '<br>' + location.fsPhone + '<br>' +
+    location.fsAddress + '<br><a href="' + location.fsURL + '">' +
+    location.fsURL + '</p></div>';
 }
 // Initializes Neighborhood Map
 function initMap() {
@@ -132,16 +147,10 @@ function initMap() {
     //var contentString = location.info();
     var position = location.latLng();
     var title = location.title();
-    if(location.fsData){
-      console.log(location.fsData);
-    }
-    var content = {
-
-      //phone: location.fsData.contact.formattedPhone,
-      //address: location.fsData.location.formattedAddress,
-      //website: location.fsData.url,
-      //img: location.imgURL
-    }
+    /*var contentString = '<div id="content"' + i + '>' + '<img src="' +
+      locations[i].fsImgURL + '" alt=' + locations[i].title() + '>' + '<p>' +
+      locations[i].title() + '<br>' + locations[i].fsPhone + '<br>' +
+      locations[i].fsAddress + '<br>' + locations[i].fsURL + '</p></div>';*/
     /*var node = document.createElement("ul");
     for(i = 0; i < content.length; i++){
       node.appendChild("li");
@@ -154,17 +163,14 @@ function initMap() {
       title: title,
       icon: 'img/marker.png',
       animation: google.maps.Animation.DROP,
-      id: i,
-      content : location.fsData
+      id: i
     });
 
     google.maps.event.addListener(marker, 'click', (function(marker) {
       return function() {
-        //infowindow.setContent(marker.title, marker.contentString);
+        infowindow.setContent(marker.contentString);
         infowindow.open(map, marker);
-        marker.setAnimation(null);
-        console.log(marker.contentString);
-
+        toggleBounce(this);
       }
     })(marker));
 
@@ -175,7 +181,6 @@ function initMap() {
     //marker.addListener()
   }
 };
-
 // Animate markers by making them bounce
 function toggleBounce(marker) {
     if (marker.getAnimation() !== null) {
