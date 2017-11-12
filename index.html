@@ -13,7 +13,7 @@
       </div>
       <div id="interface">
         <div id="interface-content">
-          <input type="text" data-bind="value:filter,valueUpdate: 'keyup'" />
+          <input type="text" data-bind="value:filter, valueUpdate: 'keyup'" />
           <ul data-bind="foreach: filteredLocations">
             <li>
               <span data-bind="text: title, click: $root.clickLocation"></span>
@@ -31,7 +31,7 @@
     <script src="js/app.js"></script>
     <script src="js/viewModel.js"></script>
     <script async
-      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCcYFz2huyOgq3t_8Y0X3bFTqRuHRUGsxg&callback=loadJSON">
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCcYFz2huyOgq3t_8Y0X3bFTqRuHRUGsxg&callback=initMap">
     </script>
   </body>
 </html>

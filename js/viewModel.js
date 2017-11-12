@@ -1,4 +1,6 @@
-
+var JSONLocations;
+var locations;
+var map;
 // Hamburger button
 function showMenu() {
   var menu = document.getElementById('interface-content');
@@ -110,44 +112,17 @@ function openInfoWindow(marker){
 // Initializes Neighborhood Map
 function initMap() {
   var styles = [];
-  var bounds = new google.maps.LatLngBounds();
+  //var bounds = new google.maps.LatLngBounds();
   var marker, i;
-  getFoursquare();
+
   // Creates a new map centered on Austin, TX
-  var map = new google.maps.Map(document.getElementById('map'), {
+  map = new google.maps.Map(document.getElementById('map'), {
       center: {
           lat: 30.241253,
           lng: -97.773921
       },
       zoom: 13,
   });
-
-
-  // Create markers for map locations
-    for (var i = 0; i < appViewModel.locations().length; i++) {
-      var location = appViewModel.locations()[i]
-      var position = location.latLng();
-      var title = location.title();
-
-      // Create a marker for each location
-      marker = new google.maps.Marker({
-        map: map,
-        position: position,
-        title: title,
-        icon: 'img/marker.png',
-        animation: google.maps.Animation.DROP,
-        id: i
-      });
-
-      google.maps.event.addListener(marker, 'click', (function(marker) {
-        return function() {
-          openInfoWindow(this)
-          toggleBounce(this);
-        }
-      })(marker));
-
-      location.marker = marker;
-  }
 };
 // Animate markers by making them bounce
 function toggleBounce(marker) {
@@ -158,54 +133,108 @@ function toggleBounce(marker) {
     }
 };
 
-// Hide marker on map
-function hideMarker(marker) {
-    marker.setMap(null);
-};
-
-// Show marker on map
-function showMarker(marker) {
-    marker.setMap(map);
-};
-
 // ViewModel
 function AppViewModel() {
   var self = this;
   var markers = [];
-
-  self.locations = ko.observableArray();
-  locations = self.locations();
-
-  // Filter locations
   self.filter = ko.observable();
-  self.filteredLocations = ko.computed(function() {
-    var filter = self.filter(),
-      arr = [];
-    if (filter) {
-      ko.utils.arrayForEach(locations, function (location) {
-        if (location.title().includes(filter)) {
-          arr.push(location);
-          showMarker(location.marker);
-        };
-        if (location.title().includes(filter) == false) {
-          hideMarker(location.marker);
-        }
-      });
-    } else {
-        arr = locations;
-        for (i = 0; i < self.locations.length; i++){
-          currentLocation = locations[i];
-        }
-    }
-    return arr;
-  });
+  self.filteredLocations = '';
 
+
+  function loadJSON(callback) {
+    var locationsURL = 'https://api.myjson.com/bins/17wxv7';
+    $.ajax({
+        async: true,
+        url: locationsURL,
+        dataType: 'json',
+        error: alert('Unable to load locations'),
+        success: function(response) {
+            JSONLocations = response.data.locations;
+            loadLocations(JSONLocations);
+            getFoursquare();
+        }
+    });
+  }
+
+  function loadLocations(JSONLocations) {
+    self.locations = ko.observableArray();
+    for (i = 0; i < JSONLocations.length; i++) {
+        appViewModel.locations.push(new Location(JSONLocations[i]));
+        console.log(JSONLocations[i]);
+    }
+    locations = self.locations();
+
+    // Filter locations
+    self.filteredLocations = ko.computed(function() {
+      var filter = self.filter(),
+        arr = [];
+      if (filter) {
+        ko.utils.arrayForEach(locations, function (location) {
+          if (location.title().includes(filter)) {
+            arr.push(location);
+            showMarker(location.marker);
+          };
+          if (location.title().includes(filter) == false) {
+            hideMarker(location.marker);
+          }
+        });
+      } else {
+          arr = locations;
+          for (i = 0; i < self.locations.length; i++){
+            currentLocation = locations[i];
+          }
+      }
+      console.log("This step is happening")
+      return arr;
+    });
+    createMarkers();
+  }
+
+
+  function createMarkers() {
+    // Create markers for map locations
+      for (var i = 0; i < appViewModel.locations().length; i++) {
+        var location = appViewModel.locations()[i]
+        var position = location.latLng();
+        var title = location.title();
+
+        // Create a marker for each location
+        marker = new google.maps.Marker({
+          map: map,
+          position: position,
+          title: title,
+          icon: 'img/marker.png',
+          animation: google.maps.Animation.DROP,
+          id: i
+        });
+        google.maps.event.addListener(marker, 'click', (function(marker) {
+          return function() {
+            openInfoWindow(this)
+            toggleBounce(this);
+          }
+        })(marker));
+        location.marker = marker;
+    }
+  }
+
+  // Hide marker on map
+  function hideMarker(marker) {
+      marker.setMap(null);
+      console.log('Marker should be hidden')
+  };
+
+  // Show marker on map
+  function showMarker(marker) {
+      marker.setMap(map);
+      console.log('Marker should be visable')
+  };
 
   // Click Event for Locations List
   self.clickLocation = function(location){
     toggleBounce(location.marker);
     openInfoWindow(location.marker);
   }
+  loadJSON();
 };
 
 var appViewModel = new AppViewModel();

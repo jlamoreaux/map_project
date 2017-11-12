@@ -3,14 +3,15 @@ function Location(newLocation) {
     return {
         title: ko.observable(newLocation.title),
         latLng: ko.observable(newLocation.latLng),
-        info: ko.observable(newLocation.info)
+        info: ko.observable(newLocation.info),
+        marker: {}
     };
 };
 
-var locationsURL = 'https://api.myjson.com/bins/17wxv7';
-var JSONLocations = {};
+
+
 // https://codepen.io/KryptoniteDove/post/load-json-file-locally-using-pure-javascript
-function loadJSON(callback) {
+/*function loadJSON(callback) {
     $.ajax({
         async: true,
         url: locationsURL,
@@ -21,13 +22,10 @@ function loadJSON(callback) {
             for (i = 0; i < JSONLocations.length; i++) {
                 appViewModel.locations.push(new Location(JSONLocations[i]));
                 console.log(JSONLocations[i]);
-                if (i == (JSONLocations.length - 1)) {
-                    initMap();
-                }
             }
         }
     });
-}
+}*/
 
 /*function init() {
     loadJSON();
