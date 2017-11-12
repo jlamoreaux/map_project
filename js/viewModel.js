@@ -138,7 +138,7 @@ function AppViewModel() {
   var self = this;
   var markers = [];
   self.filter = ko.observable();
-  self.filteredLocations = '';
+  self.filteredLocations = {};
 
 
   function loadJSON(callback) {
@@ -147,11 +147,14 @@ function AppViewModel() {
         async: true,
         url: locationsURL,
         dataType: 'json',
-        error: alert('Unable to load locations'),
         success: function(response) {
             JSONLocations = response.data.locations;
             loadLocations(JSONLocations);
             getFoursquare();
+        },
+        error: function(jqXHR) {
+          alert("Unable to load locations");
+          console.log(jqXHR);
         }
     });
   }
@@ -226,7 +229,7 @@ function AppViewModel() {
   // Show marker on map
   function showMarker(marker) {
       marker.setMap(map);
-      console.log('Marker should be visable')
+      console.log('Marker should be visible')
   };
 
   // Click Event for Locations List
