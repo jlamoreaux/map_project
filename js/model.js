@@ -1,31 +1,40 @@
 // Model
-function Location(newLocation){
-  return {
-    title : ko.observable(newLocation.title),
-    latLng : ko.observable(newLocation.latLng),
-    info: ko.observable(newLocation.info)
-  };
+function Location(newLocation) {
+    return {
+        title: ko.observable(newLocation.title),
+        latLng: ko.observable(newLocation.latLng),
+        info: ko.observable(newLocation.info)
+    };
 };
 
+var locationsURL = 'https://api.myjson.com/bins/17wxv7';
+var JSONLocations = {};
 // https://codepen.io/KryptoniteDove/post/load-json-file-locally-using-pure-javascript
 function loadJSON(callback) {
-
-    var xobj = new XMLHttpRequest();
-        xobj.overrideMimeType("application/json");
-    xobj.open('GET', 'js/locations.json', true);
-    xobj.onreadystatechange = function () {
-          if (xobj.readyState == 4 && xobj.status == "200") {
-            callback(xobj.responseText);
-          }
-    };
-    xobj.send(null);
- }
-
-function init() {
- loadJSON(function(response) {
-  // Parse JSON string into object
-    var locations = JSON.parse(response);
- });
+    $.ajax({
+        async: true,
+        url: locationsURL,
+        dataType: 'json',
+        error: alert('Unable to load locations'),
+        success: function(response) {
+            JSONLocations = response.data.locations;
+            for (i = 0; i < JSONLocations.length; i++) {
+                appViewModel.locations.push(new Location(JSONLocations[i]));
+                console.log(JSONLocations[i]);
+                if (i == (JSONLocations.length - 1)) {
+                    initMap();
+                }
+            }
+        }
+    });
 }
 
-init();
+/*function init() {
+    loadJSON();
+    //function(response) {
+    // Parse JSON string into object
+    //JSONLocations = JSON.parse(response.data);
+    //});
+}
+
+init();*/

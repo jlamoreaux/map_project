@@ -1,38 +1,5 @@
-// Set Locations
-var starterLocations = [
-  {
-    title: "StoutHaus Coffee Pub",
-    latLng: {lat: 30.2325888, lng: -97.811333},
-    info:"Words",
-    fsData: {}
-  },
-  {
-    title: "Torchy's Tacos",
-    latLng: {lat: 30.2509257, lng: -97.7542336},
-    info: "More words",
-    fsData: {}
-  },
-  {
-    title: "Gordough's",
-    latLng: {lat: 30.2495123, lng: -97.7548084},
-    info: "Other words",
-    fsData: {}
-  },
-  {
-    title: "Lick Honest Ice Creams",
-    latLng: {lat: 30.2555995, lng: -97.7626348},
-    info: "Words Words Words",
-    fsData: {}
-  },
-  {
-    title: "St. Elmo Brewing Company",
-    latLng: {lat: 30.2174538, lng: -97.7610629},
-    info: "stuff",
-    fsData: {}
-  }
-];
-var locations;
 
+// Hamburger button
 function showMenu() {
   var menu = document.getElementById('interface-content');
   if(menu.style.display == "none"){
@@ -41,6 +8,7 @@ function showMenu() {
     menu.style.display = "none";
   }
 }
+
 // Get's Foursquare API info for locations
 function getFoursquare() {
   for (i = 0; i < locations.length; i++){
@@ -90,7 +58,7 @@ function getFoursquare() {
         }
       });
     })(i);
-        // Make ajax request for an image for each location
+    // Make ajax request for an image for each location
     function getFoursquareImage(currentLocation){
       var id = currentLocation.fsID;
       var prefix = 'https://api.foursquare.com/v2/venues/'
@@ -153,30 +121,32 @@ function initMap() {
       },
       zoom: 13,
   });
+
+
   // Create markers for map locations
-  for (var i = 0; i < appViewModel.locations().length; i++) {
-    var location = appViewModel.locations()[i]
-    var position = location.latLng();
-    var title = location.title();
+    for (var i = 0; i < appViewModel.locations().length; i++) {
+      var location = appViewModel.locations()[i]
+      var position = location.latLng();
+      var title = location.title();
 
-    // Create a marker for each location
-    marker = new google.maps.Marker({
-      map: map,
-      position: position,
-      title: title,
-      icon: 'img/marker.png',
-      animation: google.maps.Animation.DROP,
-      id: i
-    });
+      // Create a marker for each location
+      marker = new google.maps.Marker({
+        map: map,
+        position: position,
+        title: title,
+        icon: 'img/marker.png',
+        animation: google.maps.Animation.DROP,
+        id: i
+      });
 
-    google.maps.event.addListener(marker, 'click', (function(marker) {
-      return function() {
-        openInfoWindow(this)
-        toggleBounce(this);
-      }
-    })(marker));
+      google.maps.event.addListener(marker, 'click', (function(marker) {
+        return function() {
+          openInfoWindow(this)
+          toggleBounce(this);
+        }
+      })(marker));
 
-    location.marker = marker;
+      location.marker = marker;
   }
 };
 // Animate markers by making them bounce
@@ -204,11 +174,6 @@ function AppViewModel() {
   var markers = [];
 
   self.locations = ko.observableArray();
-  for (i = 0; i < starterLocations.length; i++){
-      self.locations.push(new Location(starterLocations[i]));
-      console.log(starterLocations[i]);
-  }
-
   locations = self.locations();
 
   // Filter locations
@@ -235,6 +200,7 @@ function AppViewModel() {
     return arr;
   });
 
+
   // Click Event for Locations List
   self.clickLocation = function(location){
     toggleBounce(location.marker);
@@ -243,5 +209,4 @@ function AppViewModel() {
 };
 
 var appViewModel = new AppViewModel();
-
 ko.applyBindings(appViewModel);
