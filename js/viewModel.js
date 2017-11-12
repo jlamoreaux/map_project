@@ -138,6 +138,7 @@ function openInfoWindow(marker){
   infowindow.setContent(marker.contentString);
   infowindow.open(map, marker);
 }
+
 // Initializes Neighborhood Map
 function initMap() {
   var styles = [];
@@ -152,24 +153,12 @@ function initMap() {
       },
       zoom: 13,
   });
-  // Create Info Window
-  //var infowindow = new google.maps.InfoWindow();
   // Create markers for map locations
   for (var i = 0; i < appViewModel.locations().length; i++) {
     var location = appViewModel.locations()[i]
-    // Gets info from location array in Model
-    //var contentString = location.info();
     var position = location.latLng();
     var title = location.title();
-    /*var contentString = '<div id="content"' + i + '>' + '<img src="' +
-      locations[i].fsImgURL + '" alt=' + locations[i].title() + '>' + '<p>' +
-      locations[i].title() + '<br>' + locations[i].fsPhone + '<br>' +
-      locations[i].fsAddress + '<br>' + locations[i].fsURL + '</p></div>';*/
-    /*var node = document.createElement("ul");
-    for(i = 0; i < content.length; i++){
-      node.appendChild("li");
-      node.appendChild(content[i]);
-    }*/
+
     // Create a marker for each location
     marker = new google.maps.Marker({
       map: map,
@@ -183,17 +172,11 @@ function initMap() {
     google.maps.event.addListener(marker, 'click', (function(marker) {
       return function() {
         openInfoWindow(this)
-        //infowindow.setContent(marker.contentString);
-        //infowindow.open(map, marker);
         toggleBounce(this);
       }
     })(marker));
 
     location.marker = marker;
-
-    //createList(locations[i]);
-    //self.markers.push(marker);
-    //marker.addListener()
   }
 };
 // Animate markers by making them bounce
@@ -202,7 +185,6 @@ function toggleBounce(marker) {
         marker.setAnimation(null);
     } else {
         marker.setAnimation(google.maps.Animation.BOUNCE);
-        //setTimeout(marker.setAnimation(null), 5000);
     }
 };
 
@@ -221,25 +203,11 @@ function AppViewModel() {
   var self = this;
   var markers = [];
 
-/*  var json = (function() {
-        var json = null;
-        $.ajax({
-            'url': "js/locations.json",
-            'dataType': "json",
-            'success': function (data) {
-                json = data;
-            }
-        });
-        return json;
-    })(); */
-
-  self.locations = ko.observableArray([
-    new Location(starterLocations[0]),
-    new Location(starterLocations[1]),
-    new Location(starterLocations[2]),
-    new Location(starterLocations[3]),
-    new Location(starterLocations[4])
-  ]);
+  self.locations = ko.observableArray();
+  for (i = 0; i < starterLocations.length; i++){
+      self.locations.push(new Location(starterLocations[i]));
+      console.log(starterLocations[i]);
+  }
 
   locations = self.locations();
 
@@ -257,22 +225,11 @@ function AppViewModel() {
         if (location.title().includes(filter) == false) {
           hideMarker(location.marker);
         }
-        /*for(var i = 0; i < markers.length; i++){
-          currentMarker = markers[i];
-          console.log(ok);
-          if (currenMarker.title.includes(filter) == false){
-            location.marker.setVisibile(false);
-            console.log(yes)
-          }
-        }*/
       });
     } else {
         arr = locations;
         for (i = 0; i < self.locations.length; i++){
-          currentLocation = locations[i]
-          //if (currentLocation.marker.map == null) {
-            //showMarker(currentLocation.marker);
-          //}
+          currentLocation = locations[i];
         }
     }
     return arr;
@@ -282,13 +239,6 @@ function AppViewModel() {
   self.clickLocation = function(location){
     toggleBounce(location.marker);
     openInfoWindow(location.marker);
-    /*title = location.title();
-    for(var i = 0; i < markers.length; i++){
-      if (markers[i].title == title){
-
-        console.log(location.title());
-      }
-    }*/
   }
 };
 
