@@ -131,10 +131,16 @@ function loadDescription(location){
     location.fsAddress + '<br><a href="' + location.fsURL + '">' +
     location.fsURL + '</p></div>';
 }
+
+// Opens InfoWindow
+function openInfoWindow(marker){
+  var infowindow = new google.maps.InfoWindow();
+  infowindow.setContent(marker.contentString);
+  infowindow.open(map, marker);
+}
 // Initializes Neighborhood Map
 function initMap() {
   var styles = [];
-  var largeInfoWindow = new google.maps.InfoWindow();
   var bounds = new google.maps.LatLngBounds();
   var marker, i;
   getFoursquare();
@@ -147,7 +153,7 @@ function initMap() {
       zoom: 13,
   });
   // Create Info Window
-  var infowindow = new google.maps.InfoWindow();
+  //var infowindow = new google.maps.InfoWindow();
   // Create markers for map locations
   for (var i = 0; i < appViewModel.locations().length; i++) {
     var location = appViewModel.locations()[i]
@@ -176,8 +182,9 @@ function initMap() {
 
     google.maps.event.addListener(marker, 'click', (function(marker) {
       return function() {
-        infowindow.setContent(marker.contentString);
-        infowindow.open(map, marker);
+        openInfoWindow(this)
+        //infowindow.setContent(marker.contentString);
+        //infowindow.open(map, marker);
         toggleBounce(this);
       }
     })(marker));
@@ -274,6 +281,7 @@ function AppViewModel() {
   // Click Event for Locations List
   self.clickLocation = function(location){
     toggleBounce(location.marker);
+    openInfoWindow(location.marker);
     /*title = location.title();
     for(var i = 0; i < markers.length; i++){
       if (markers[i].title == title){
