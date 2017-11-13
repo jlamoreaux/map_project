@@ -1,6 +1,7 @@
 var JSONLocations;
 var locations;
 var map;
+var infowindow;
 // Hamburger button
 function showMenu() {
   var menu = document.getElementById('interface-content');
@@ -107,7 +108,7 @@ function loadDescription(location){
 
 // Opens InfoWindow
 function openInfoWindow(marker){
-  var infowindow = new google.maps.InfoWindow();
+
   infowindow.setContent(marker.contentString);
   infowindow.open(map, marker);
 }
@@ -126,6 +127,7 @@ function initMap() {
       },
       zoom: 13,
   });
+  infowindow = new google.maps.InfoWindow();
 };
 // Animate markers by making them bounce
 function toggleBounce(marker) {
