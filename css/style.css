@@ -16,7 +16,7 @@ h1 {
   padding: 10px;
   top: 5px;
   position: relative;
-
+  font-weight: 800;
 }
 
 ul {
@@ -47,7 +47,8 @@ a {
 #hamburger {
   /*position: relative;*/
   padding-left: 5px;
-  color: #3A3A3D;
+  font-weight: 800;
+  color: #A9A8B8;
 }
 
 #interface {
@@ -74,9 +75,6 @@ a {
     float: left;
 }*/
 
-label {
-  color: #525257;
-}
 input {
   margin: 0 0 15px 5px;
   width: 200px;
@@ -85,30 +83,38 @@ input {
 li {
   border-bottom: 1px solid #444448;
   padding: 5px;
-  color: #525257;
+  color: #A9A8B8;
+}
+
+label{
+  color: #A9A8B8;
+}
+
+#filterIcon {
+  margin: 10px 5px 0 5px;
 }
 
 @media screen and (max-width: 500px) {
-
   #interface {
-    /*display: inline-block;
-    position: absolute;
-    width: 100%;*/
-  }
-  #interface-content {
-    /*min-width: 300px;
-    z-index: 2;
-    display: none;
-    position: absolute;
-    color: black;
-    padding: 10px;*/
-  }
-  #map {
-    z-index: 1;
-  }
-  #hamburger:hover #interface-content{
-    display: block;
-  }
+   /*display: inline-block;
+   position: absolute;
+   width: 100%;*/
+   /* top: 15px; */
+ }
+ #interface-content {
+   /*min-width: 300px;
+   z-index: 2;
+   display: none;
+   position: absolute;
+   color: black;
+   padding: 10px;*/
+   top: 40px;
+   position:  relative;
+   z-index: 2;
+ }
+ #map {
+   z-index: 1;
+ }
 }
 
 @media screen and (min-width: 500px) and (max-width: 800px) {
