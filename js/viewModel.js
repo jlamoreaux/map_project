@@ -138,7 +138,9 @@ function AppViewModel() {
   var self = this;
   var markers = [];
   self.filter = ko.observable();
-  self.filteredLocations = {};
+  self.locations = ko.observableArray();
+  self.filteredLocations = ko.observable();
+  //self.filteredLocations = {};
 
 
   function loadJSON(callback) {
@@ -160,7 +162,6 @@ function AppViewModel() {
   }
 
   function loadLocations(JSONLocations) {
-    self.locations = ko.observableArray();
     for (i = 0; i < JSONLocations.length; i++) {
         appViewModel.locations.push(new Location(JSONLocations[i]));
         console.log(JSONLocations[i]);
@@ -172,7 +173,7 @@ function AppViewModel() {
       var filter = self.filter(),
         arr = [];
       if (filter) {
-        ko.utils.arrayForEach(locations, function (location) {
+        ko.utils.arrayForEach(self.locations(), function (location) {
           if (location.title().includes(filter)) {
             arr.push(location);
             showMarker(location.marker);
@@ -182,12 +183,12 @@ function AppViewModel() {
           }
         });
       } else {
-          arr = locations;
-          for (i = 0; i < self.locations.length; i++){
+          arr = self.locations();
+          console.log("All markers should be visible")
+          /*for (i = 0; i < self.locations.length; i++){
             currentLocation = locations[i];
-          }
+          }*/
       }
-      console.log("This step is happening")
       return arr;
     });
     createMarkers();
