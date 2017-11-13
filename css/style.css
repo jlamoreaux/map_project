@@ -11,30 +11,88 @@ html, body {
 h1 {
   text-transform: uppercase;
   font-weight: 100;
+  display: inline;
+  padding: 10px;
+  top: 5px;
+  position: relative;
+
 }
+
 ul {
   list-style-type: none;
   margin: 2px;
   padding: 2px;
 }
+
 #map {
   height: 100%;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
+#header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 50px;
+  z-index: 3;
+  background-color: white;
+}
+
+#hamburger {
+  /*position: relative;*/
+  padding-left: 5px;
+}
+
+#interface {
+  position: fixed;
+  display: inline-block;
+  top: 25px;
+
+}
+
+#interface-content {
+  min-width: 300px;
+  z-index: 2;
+  display: none;
+  position: absolute;
+  padding: 10px;
+  background-color: white;
+  color: black;
+  box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2);
+}
+
+/*ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}*/
+
+/*li {
+    float: left;
+}*/
+
+
 @media screen and (max-width: 500px) {
 
   #interface {
-    display: inline-block;
-    position: relative;
-    width: 100%;
+    /*display: inline-block;
+    position: absolute;
+    width: 100%;*/
   }
   #interface-content {
-    min-width: 100%;
+    /*min-width: 300px;
     z-index: 2;
     display: none;
     position: absolute;
     background-color: white;
     color: black;
+    padding: 10px;*/
   }
   #map {
     z-index: 1;
@@ -50,13 +108,9 @@ ul {
     position: relative;
   }
   #interface-content {
-    min-width: 300px;
-    z-index: 2;
-    display: none;
-    position: absolute;
-    background-color: white;
-    color: black;
+
   }
+
   #map {
     z-index: 1;
   }
@@ -69,12 +123,20 @@ ul {
   #interface {
     display: inline-block;
     position: relative;
-    min-width: 200px;
+    min-width: 200px;*/
+    height: 100%;
+    float: left;
   }
+  
   #interface-content {
     display: block;
-    min-width: 100%;
+    height: 100%;
   }
+
+  #map {
+    float: right;
+  }
+
   #hamburger {
     display: none;
   }

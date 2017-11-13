@@ -210,7 +210,7 @@ function AppViewModel() {
           map: map,
           position: position,
           title: title,
-          icon: 'img/marker.png',
+          //icon: 'img/marker.png',
           animation: google.maps.Animation.DROP,
           id: i
         });
