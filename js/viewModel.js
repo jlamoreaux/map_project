@@ -141,7 +141,32 @@ function AppViewModel() {
   self.locations = ko.observableArray();
   self.filteredLocations = ko.observable();
   //self.filteredLocations = {};
-
+  // Filter locations
+  self.filteredLocations = ko.computed(function() {
+    var filter = self.filter(),
+      arr = [];
+    if (filter) {
+      ko.utils.arrayForEach(self.locations(), function (location) {
+        if (location.title().includes(filter)) {
+          arr.push(location);
+          showMarker(location.marker);
+        };
+        if (location.title().includes(filter) == false) {
+          hideMarker(location.marker);
+        }
+      });
+    } else {
+        arr = self.locations();
+        console.log("All markers should be visible")
+        for(i = 0; i<self.locations().length; i++){
+            showMarker(self.locations()[i].marker);
+        }
+        /*for (i = 0; i < self.locations.length; i++){
+          currentLocation = locations[i];
+        }*/
+    }
+    return arr;
+  });
 
   function loadJSON(callback) {
     var locationsURL = 'https://api.myjson.com/bins/17wxv7';
@@ -168,29 +193,7 @@ function AppViewModel() {
     }
     locations = self.locations();
 
-    // Filter locations
-    self.filteredLocations = ko.computed(function() {
-      var filter = self.filter(),
-        arr = [];
-      if (filter) {
-        ko.utils.arrayForEach(self.locations(), function (location) {
-          if (location.title().includes(filter)) {
-            arr.push(location);
-            showMarker(location.marker);
-          };
-          if (location.title().includes(filter) == false) {
-            hideMarker(location.marker);
-          }
-        });
-      } else {
-          arr = self.locations();
-          console.log("All markers should be visible")
-          /*for (i = 0; i < self.locations.length; i++){
-            currentLocation = locations[i];
-          }*/
-      }
-      return arr;
-    });
+
     createMarkers();
   }
 
@@ -240,6 +243,6 @@ function AppViewModel() {
   }
   loadJSON();
 };
-
+ko.options.deferUpdates = true;
 var appViewModel = new AppViewModel();
 ko.applyBindings(appViewModel);
