@@ -48,9 +48,9 @@ function getFoursquare() {
             currentLocation.fsAddress = ''
           };
           if(fsData.url) {
-            currentLocation.fsURL = fsData.url;
+            currentLocation.url = fsData.url;
           } else {
-            currentLocation.fsURL = '';
+            currentLocation.url = '';
           }
           getFoursquareImage(currentLocation);
         },
@@ -71,7 +71,7 @@ function getFoursquare() {
         url: url,
         dataType: 'json',
         success: function(data) {
-          var imgData = data.response.photos.items[0].prefix + '100x100' + data.response.photos.items[0].suffix;
+          var imgData = data.response.photos.items[0].prefix + '200x200' + data.response.photos.items[0].suffix;
           currentLocation.fsImgURL = imgData;
           loadDescription(currentLocation);
         },
@@ -95,11 +95,14 @@ function getFoursquare() {
 // Modified version of solution found at https://stackoverflow.com/questions/3094032/how-to-populate-a-google-maps-infowindow-with-ajax-content
 function loadDescription(location){
   var marker = location.marker;
-  marker.contentString = '<div id="content"' + i + '>' + '<img src="' +
-    location.fsImgURL + '" alt=' + location.title() + '>' + '<p>' +
+  var linkFoursquare = 'http://foursquare.com/v/' + location.fsID + '?ref=4UXAAMMSVWQCST32VAD333YU05UABMCSMMXPREUCP40ATKSA';
+  marker.contentString = '<div id="content"' + i + '>' + '<a href=' +
+    linkFoursquare + '><img src="' +
+    location.fsImgURL + '" alt=' + location.title() + '></a>' + '<p>' +
     location.title() + '<br>' + location.fsPhone + '<br>' +
-    location.fsAddress + '<br><a href="' + location.fsURL + '">' +
-    location.fsURL + '</p></div>';
+    location.fsAddress + '<br><a href="' + location.url + '">' +
+    location.url +
+    '</p><br><img src="img/foursquare.png" alt="powered by foursquare" style="width:200px"></div>';
 }
 
 // Opens InfoWindow
