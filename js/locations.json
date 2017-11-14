@@ -1,30 +1,89 @@
 {
-  "data" : {
-    "users": [
+  "data": {
+    "locations": [
       {
         "title": "StoutHaus Coffee Pub",
-        "latLng": {"lat": 30.2325888, "lng": -97.811333},
-        "info":""
+        "latLng": {
+          "lat": 30.2325888,
+          "lng": -97.811333
+        }
       },
       {
         "title": "Torchy's Tacos",
-        "latLng": {"lat": 30.2509257, "lng": -97.7542336},
-        "info": ""
+        "latLng": {
+          "lat": 30.2509257,
+          "lng": -97.7542336
+        }
       },
       {
-        "title": "Gordough's Big. Fat. Donuts.",
-        "latLng": {"lat": 30.2495123, "lng": -97.7548084},
-        "info": ""
+        "title": "Gordough's",
+        "latLng": {
+          "lat": 30.2495123,
+          "lng": -97.7548084
+        }
       },
       {
         "title": "Lick Honest Ice Creams",
-        "latLng": {"lat": 30.2555995, "lng": -97.7626348},
-        "info": ""
+        "latLng": {
+          "lat": 30.2555995,
+          "lng": -97.7626348
+        }
       },
       {
         "title": "St. Elmo Brewing Company",
-        "latLng": {"lat": 30.2174538, "lng": -97.7610629},
-        "info": ""
+        "latLng": {
+          "lat": 30.2174538,
+          "lng": -97.7610629
+        }
+      },
+      {
+        "title": "Summermoon Coffee Bar",
+        "latLng": {
+          "lat": 30.233264,
+          "lng": -97.7670597
+        }
+      },
+      {
+        "title": "Half Step",
+        "latLng": {
+          "lat": 30.258613,
+          "lng": -97.738594
+        }
+      },
+      {
+        "title": "Prohibition Creamery",
+        "latLng": {
+          "lat": 30.2642871,
+          "lng": -97.7297903
+        }
+      },
+      {
+        "title": "Auditorium Shores",
+        "latLng": {
+          "lat": 30.2620275,
+          "lng": -97.7557346
+        }
+      },
+      {
+        "title": "Zilker Park",
+        "latLng": {
+          "lat": 30.2669624,
+          "lng": -97.775048
+        }
+      },
+      {
+        "title": "Crepe Crazy",
+        "latLng": {
+          "lat": 30.2416082,
+          "lng": -97.7868631
+        }
+      },
+      {
+        "title": "Kerbey Lane Cafe",
+        "latLng": {
+          "lat": 30.307993,
+          "lng": -97.7527437
+        }
       }
     ]
   }

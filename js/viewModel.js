@@ -19,8 +19,8 @@ function getFoursquare() {
     (function(i){
       var url = 'https://api.foursquare.com/v2/venues/search?client_id=4UXAAMMSVWQCST32VAD333YU05UABMCSMMXPREUCP40ATKSA&client_secret=XWYFPXB1TXC35X4WO43DMRU5ITDV2NAL0LIY2VV3YZ32EKBI&v=20171101'
       var currentLocation = locations[i];
-      var lat = locations[i].latLng().lat;
-      var lng = locations[i].latLng().lng;
+      var lat = currentLocation.latLng().lat;
+      var lng = currentLocation.latLng().lng;
       url = url + "&ll=" + lat + "," + lng + "&query=" + locations[i].title();
       $.ajax({
         async: true,
@@ -116,7 +116,6 @@ function openInfoWindow(marker){
 // Initializes Neighborhood Map
 function initMap() {
   var styles = [];
-  //var bounds = new google.maps.LatLngBounds();
   var marker, i;
 
   // Creates a new map centered on Austin, TX
@@ -174,7 +173,7 @@ function AppViewModel() {
   });
 
   function loadJSON(callback) {
-    var locationsURL = 'https://api.myjson.com/bins/17wxv7';
+    var locationsURL = 'https://api.myjson.com/bins/1cgy6r';
     $.ajax({
         async: true,
         url: locationsURL,
@@ -183,6 +182,7 @@ function AppViewModel() {
             JSONLocations = response.data.locations;
             loadLocations(JSONLocations);
             getFoursquare();
+            console.log(JSONLocations);
         },
         error: function(jqXHR) {
           alert("Unable to load locations");
@@ -197,8 +197,6 @@ function AppViewModel() {
         console.log(JSONLocations[i]);
     }
     locations = self.locations();
-
-
     createMarkers();
   }
 
@@ -215,7 +213,7 @@ function AppViewModel() {
           map: map,
           position: position,
           title: title,
-          //icon: 'img/marker.png',
+          icon: 'img/marker.png',
           animation: google.maps.Animation.DROP,
           id: i
         });
