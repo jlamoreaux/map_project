@@ -8,10 +8,10 @@
   </head>
   <body>
     <div id="container">
-      <div id="header">
+      <header id="header">
         <a id="hamburger" href="javascript:void(0);" class="icon" onclick="showMenu()">&#9776;</a><span><h1>My Hangouts</h1></span>
-      </div>
-      <div id="interface">
+      </header>
+      <aside id="interface">
         <div id="interface-content">
           <label>Filter</label><img id='filterIcon' src='img/filter.png' style="width:20px;height:20px;"/><input type="text" data-bind="value: filter, valueUpdate: 'keyup'" />
           <ul data-bind="foreach: filteredLocations">
@@ -20,10 +20,10 @@
             </li>
           </ul>
         </div>
-      </div>
-      <div id="map">
+      </aside>
+      <main id="map">
 
-      </div>
+      </main>
     </div>
     <script type="text/javascript" src="js/knockout-3.4.2.js"></script>
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
