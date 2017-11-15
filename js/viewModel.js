@@ -136,6 +136,11 @@ function toggleBounce(marker) {
   }
 };
 
+function mapError(){
+  alert("Sorry, we seem to have lost the map! Please try again later.")
+      console.log("Google Maps API was not able to load.")
+}
+
 // ViewModel
 function AppViewModel() {
   var self = this;
@@ -222,12 +227,12 @@ function AppViewModel() {
 
   // Hide marker on map
   function hideMarker(marker) {
-    marker.setMap(null);
+    marker.setVisible(false);
   };
 
   // Show marker on map
   function showMarker(marker) {
-    marker.setMap(map);
+    marker.setVisible(true);
   };
 
   // Click Event for Locations List
