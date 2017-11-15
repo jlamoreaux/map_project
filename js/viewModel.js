@@ -130,6 +130,9 @@ function toggleBounce(marker) {
     marker.setAnimation(null);
   } else {
     marker.setAnimation(google.maps.Animation.BOUNCE);
+    window.setTimeout(function(){
+      marker.setAnimation(null);
+    }, 2800)
   }
 };
 
